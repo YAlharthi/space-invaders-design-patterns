@@ -1,5 +1,3 @@
-import javax.swing.ImageIcon;
-
 /**
  * 
  * @author 
@@ -7,19 +5,14 @@ import javax.swing.ImageIcon;
 public class Alien extends Sprite {
 
     private Bomb bomb;
-    private final String alien = "/img/alien.png";
 
     /*
      * Constructor
      */
-    public Alien(int x, int y) {
+    Alien(int x, int y, Bomb bomb) {
         this.x = x;
         this.y = y;
-
-        bomb = new Bomb(x, y);
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(alien));
-        setImage(ii.getImage());
-
+        this.bomb = bomb;
     }
 
     public void act(int direction) {

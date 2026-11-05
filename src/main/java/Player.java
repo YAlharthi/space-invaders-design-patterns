@@ -1,30 +1,23 @@
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
-
 /**
  * 
  * @author
  */
 public class Player extends Sprite implements Commons {
 
-	private final int START_Y = 400;
-	private final int START_X = 270;
-
-	private final String player = "/img/craft.png";
 	private int width;
 
 	/*
 	 * Constructor
 	 */
-	public Player() {
-		ImageIcon ii = new ImageIcon(this.getClass().getResource(player));
+	Player(int x, int y) {
+		setX(x);
+		setY(y);
+	}
 
-		width = ii.getImage().getWidth(null);
-
-		setImage(ii.getImage());
-		setX(START_X);
-		setY(START_Y);
+	void setWidth(int width) {
+		this.width = width;
 	}
 
 	public void act() {

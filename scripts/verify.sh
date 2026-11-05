@@ -8,4 +8,5 @@ javac -encoding UTF-8 -Xlint:none -d out/main src/main/java/*.java
 cp -r src/main/java/img out/main/
 javac -encoding UTF-8 -Xlint:none -cp out/main -d out/test src/test/java/*.java
 java -Djava.awt.headless=true -cp out/main:out/test BehaviourCheck
+java -Djava.awt.headless=true -cp out/main:out/test PatternChecks
 java -cp out/main:out/test WindowCheck

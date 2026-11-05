@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -27,11 +26,14 @@ public class Board extends JPanel implements Runnable, Commons {
 	private static final long serialVersionUID = 1L;
 
 	private Dimension d;
-	private ArrayList aliens;
+	private AlienWave aliens;
 	private Player player;
 	private Shot shot;
-	private GameOver gameend;
-	private Won vunnet;
+	private Sprite gameend;
+
+	private final SpriteFactory<Alien> alienFactory = new AlienFactory();
+	private final SpriteFactory<Player> playerFactory = new PlayerFactory();
+	private final SpriteFactory<Shot> shotFactory = new ShotFactory();
 
 	private int alienX = 150;
 	private int alienY = 25;
@@ -41,7 +43,6 @@ public class Board extends JPanel implements Runnable, Commons {
 	private boolean ingame = true;
 	private boolean havewon = true;
 	private final String expl = "/img/explosion.png";
-	private final String alienpix = "/img/alien.png";
 	private String message = "Seu planeta nos pertence agora...";
 
 	private Thread animator;
@@ -65,19 +66,14 @@ public class Board extends JPanel implements Runnable, Commons {
 	}
 
 	public void gameInit() {
-		aliens = new ArrayList();
+		aliens = new AlienWaveBuilder(alienFactory)
+				.rows(4)
+				.columns(6)
+				.origin(alienX, alienY)
+				.spacing(18)
+				.build();
 
-		ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 6; j++) {
-				Alien alien = new Alien(alienX + 18 * j, alienY + 18 * i);
-				alien.setImage(ii.getImage());
-				aliens.add(alien);
-			}
-		}
-
-		player = new Player();
+		player = playerFactory.spawn(PLAYER_START_X, PLAYER_START_Y);
 		shot = new Shot();
 
 		if (animator == null || !ingame) {
@@ -160,16 +156,12 @@ public class Board extends JPanel implements Runnable, Commons {
 	public void gameOver() {
 		Graphics g = this.getGraphics();
 
-		gameend = new GameOver();
-		vunnet = new Won();
+		SpriteFactory<? extends Sprite> screenFactory = havewon ? new WonFactory() : new GameOverFactory();
+		gameend = screenFactory.spawn(0, 0);
 
 		// g.setColor(Color.black);
 		g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
-		if (havewon == true) {
-			g.drawImage(vunnet.getImage(), 0, 0, this);
-		} else {
-			g.drawImage(gameend.getImage(), 0, 0, this);
-		}
+		g.drawImage(gameend.getImage(), 0, 0, this);
 		g.setColor(new Color(0, 32, 48));
 		g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
 		g.setColor(Color.white);
@@ -185,7 +177,7 @@ public class Board extends JPanel implements Runnable, Commons {
 	}
 
 	public void animationCycle() {
-		if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
+		if (deaths == aliens.size()) {
 			ingame = false;
 			message = "Parabéns! Você salvou a galáxia!";
 		}
@@ -358,7 +350,7 @@ public class Board extends JPanel implements Runnable, Commons {
 				if (key == KeyEvent.VK_SPACE) {
 
 					if (!shot.isVisible())
-						shot = new Shot(x, y);
+						shot = shotFactory.spawn(x, y);
 				}
 			}
 		}
