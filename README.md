@@ -9,6 +9,7 @@ This repository refactors [tatilattanzi/java-space-invaders](https://github.com/
 | Phase | Tag | Category | Patterns | Section of the code |
 |---|---|---|---|---|
 | 1 | `phase-1` | Creational | Factory Method, Builder | Creating sprites and the alien wave |
+| 2 | `phase-2` | Structural | Flyweight, Facade | Sprite images and drawing, and the menu windows |
 
 ## Run and verify
 

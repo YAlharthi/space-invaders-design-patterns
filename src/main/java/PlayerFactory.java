@@ -1,5 +1,3 @@
-import java.awt.Image;
-
 public class PlayerFactory extends SpriteFactory<Player> {
 
 	@Override
@@ -13,7 +11,7 @@ public class PlayerFactory extends SpriteFactory<Player> {
 	}
 
 	@Override
-	protected void imageLoaded(Player player, Image image) {
-		player.setWidth(image.getWidth(null));
+	protected void graphicAssigned(Player player, SpriteGraphic graphic) {
+		player.setWidth(graphic.getWidth());
 	}
 }

@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.imageio.ImageIO;
 
@@ -89,7 +88,7 @@ public class Board extends JPanel implements Runnable, Commons {
 			Alien alien = (Alien) it.next();
 
 			if (alien.isVisible()) {
-				g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
+				alien.draw(g, this);
 			}
 
 			if (alien.isDying()) {
@@ -100,7 +99,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
 	public void drawPlayer(Graphics g) {
 		if (player.isVisible()) {
-			g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+			player.draw(g, this);
 		}
 
 		if (player.isDying()) {
@@ -111,12 +110,12 @@ public class Board extends JPanel implements Runnable, Commons {
 	}
 
 	public void drawGameEnd(Graphics g) {
-		g.drawImage(gameend.getImage(), 0, 0, this);
+		gameend.draw(g, this);
 	}
 
 	public void drawShot(Graphics g) {
 		if (shot.isVisible())
-			g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
+			shot.draw(g, this);
 	}
 
 	public void drawBombing(Graphics g) {
@@ -128,7 +127,7 @@ public class Board extends JPanel implements Runnable, Commons {
 			Bomb b = a.getBomb();
 
 			if (!b.isDestroyed()) {
-				g.drawImage(b.getImage(), b.getX(), b.getY(), this);
+				b.draw(g, this);
 			}
 		}
 	}
@@ -161,7 +160,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
 		// g.setColor(Color.black);
 		g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
-		g.drawImage(gameend.getImage(), 0, 0, this);
+		gameend.draw(g, this);
 		g.setColor(new Color(0, 32, 48));
 		g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
 		g.setColor(Color.white);
@@ -201,9 +200,7 @@ public class Board extends JPanel implements Runnable, Commons {
 					if (shotX >= (alienX) && shotX <= (alienX + ALIEN_WIDTH)
 							&& shotY >= (alienY)
 							&& shotY <= (alienY + ALIEN_HEIGHT)) {
-						ImageIcon ii = new ImageIcon(getClass().getResource(
-								expl));
-						alien.setImage(ii.getImage());
+						alien.setGraphic(SpriteGraphicPool.get(expl));
 						alien.setDying(true);
 						deaths++;
 						shot.die();
@@ -290,9 +287,7 @@ public class Board extends JPanel implements Runnable, Commons {
 				if (bombX >= (playerX) && bombX <= (playerX + PLAYER_WIDTH)
 						&& bombY >= (playerY)
 						&& bombY <= (playerY + PLAYER_HEIGHT)) {
-					ImageIcon ii = new ImageIcon(this.getClass().getResource(
-							expl));
-					player.setImage(ii.getImage());
+					player.setGraphic(SpriteGraphicPool.get(expl));
 					player.setDying(true);
 					b.setDestroyed(true);
 					;

@@ -10,6 +10,7 @@ public class PatternChecks {
 		factoriesBuildTheRightSprites();
 		builderLaysOutTheWaveInReadingOrder();
 		builderRejectsAnImpossibleWave();
+		spritesOfOneKindShareAGraphic();
 		System.out.println("PASS: " + passed + " pattern checks");
 	}
 
@@ -44,6 +45,14 @@ public class PatternChecks {
 			rejected = true;
 		}
 		check(rejected, "a wave with no rows is refused");
+	}
+
+	private static void spritesOfOneKindShareAGraphic() {
+		SpriteGraphic first = SpriteGraphicPool.get("/img/alien.png");
+		int poolSize = SpriteGraphicPool.size();
+		check(first == SpriteGraphicPool.get("/img/alien.png"), "same path returns the same flyweight");
+		check(poolSize == SpriteGraphicPool.size(), "a repeat request adds nothing to the pool");
+		check(first != SpriteGraphicPool.get("/img/bomb.png"), "a different path gets its own flyweight");
 	}
 
 	private static void check(boolean condition, String what) {

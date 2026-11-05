@@ -1,4 +1,5 @@
-import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 
 /**
  * 
@@ -7,7 +8,7 @@ import java.awt.Image;
 public class Sprite {
 
         private boolean visible;
-        private Image image;
+        private SpriteGraphic graphic;
         protected int x;
         protected int y;
         protected boolean dying;
@@ -32,12 +33,15 @@ public class Sprite {
             this.visible = visible;
         }
 
-        public void setImage(Image image) {
-            this.image = image;
+        public void setGraphic(SpriteGraphic graphic) {
+            this.graphic = graphic;
         }
 
-        public Image getImage() {
-            return image;
+        /* The flyweight is shared, so this sprite supplies its own position. */
+        public void draw(Graphics g, ImageObserver observer) {
+            if (graphic != null) {
+                graphic.draw(g, x, y, observer);
+            }
         }
 
         public void setX(int x) {
