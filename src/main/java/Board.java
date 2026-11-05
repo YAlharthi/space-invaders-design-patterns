@@ -187,7 +187,7 @@ public class Board extends JPanel implements Runnable, Commons {
 	public void animationCycle() {
 		if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
 			ingame = false;
-			message = "ParabÈns! VocÍ salvou a gal·xia!";
+			message = "Parab√©ns! Voc√™ salvou a gal√°xia!";
 		}
 
 		// player
@@ -266,7 +266,7 @@ public class Board extends JPanel implements Runnable, Commons {
 				if (y > GROUND - ALIEN_HEIGHT) {
 					havewon = false;
 					ingame = false;
-					message = "Aliens est„o invadindo a gal·xia!";
+					message = "Aliens est√£o invadindo a gal√°xia!";
 				}
 
 				alien.act(direction);
